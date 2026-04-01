@@ -9,19 +9,6 @@ const favCard = document.createElement('div')
 const favCardText = favCard.Card.createTextNode(`${}`);
 favCard.appendChild(favCardText)
 //LET
-const tvShow = {
-    "score": 0.9074273,
-    "show": ({
-      "id": 139,
-      "url": "https://www.tvmaze.com/shows/139/girls",
-      "name": "Girls",
-      "type": "Scripted",
-      "language": "English",
-      "genres": [
-        "Drama",
-        "Romance"
-      ],
-    })};
 
 let tvShowsData = []
 if(tvShowsData){
@@ -34,16 +21,22 @@ if(tvShowsData){
 }
 //FUNCTIONS
 //LOOPS
-const html = ``
+const html = ''
 for(tvShow of tvShowsData){
-    html += `${tvShow.show.name} ${tvShow.show.image}`
-    cardResults = html
+    html += 
+        `<li><h3>${oneTvShow.show.name}</h3>
+        <img src="${oneTvShow.image.medium}"> 
+        </li>` //si no hay: placeholder.com (condicional ternario???)
 }
+cardResults.innerHTML = html
+//FUNCTIONS (EVENTS)
 
+//FUNCTIONS (RENDER)
 //EVENTS
 searchBtn.addEventListener('click', () => {
 
 })
+
 //FETCH
 
 //CARGAR LS
@@ -55,3 +48,8 @@ searchBtn.addEventListener('click', () => {
 */
 
 //LS
+
+// SECCIÓN DE ACCIONES AL CARGAR LA PÁGINA
+
+//   - Pedir datos al servidor
+//   - Render elementos
