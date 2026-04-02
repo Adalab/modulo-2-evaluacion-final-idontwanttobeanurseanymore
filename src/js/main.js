@@ -5,11 +5,13 @@
 const mainPage = document.querySelector('.js_main_page');
 const searchInput =  document.querySelector('.js_search_input');
 const searchBtn =  document.querySelector('.js_search_btn');
-const allTvShows = document.querySelector('.js_card_results');
-const oneTvShow = document.querySelector('.js_card')
+const allTvShows = document.querySelector('.js_results_ul');
+const favTvShows = document.querySelector('.js_fav_ul')
+const oneTvShow = document.querySelector('.js_card_li')
 
 let tvShowsData = []
 let favTvShowsData = []
+/*
 const oneTvShowObj = {
     "score": 0.7404193,
     "show": {
@@ -70,21 +72,21 @@ const oneTvShowObj = {
   }
 //2. Llamar al API -> function + fetch + renderShows()
 //LLAMA AL HACER CLICK
-
+*/
+//2. Llamar al API -> function + fetch + renderAllTvShows()
 function handleClickBtn(ev){
     ev.preventDefault();
     fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
     .then(res => res.json())
     .then(data => {
-        //console.log(data)
-        const searchedTvShows = data.show.name
-        renderAllTvShows(searchedTvShows)
+        tvShowsData = data
+        renderAllTvShows(tvShowsData)
     }) //fetch busca según el input y almacena el resultado 
         //el resultado es el argumento que le pasamos a la funcion que pinta
 }
 searchBtn.addEventListener('click', handleClickBtn)
 //al hacer click, llama a la función que hace fetch
-
+/*
 function handleClickFav(ev){
     //console.log(ev.currentTarget)
     const clickedTvShowId = ev.currentTarget.show.id;
@@ -104,30 +106,59 @@ function handleClickFav(ev){
     renderAllTvShows(tvShowsData)
     //renderAllFavourites() - función para pintar los favs
 }}
-
+*/
 function renderOneTvShow(oneTvShowObj){
     const favIndex = favTvShowsData.findIndex((eachFavShow) => eachFavShow.show.id === oneTvShowObj.show.id)
     const favClass = favIndex !== -1 ? "favourite" : ""
-    const imgTvShow = `${oneTvShowObj.show.image ? `<img src="${oneTvShowObj.show.image.medium}">` : `<img src="https://placehold.co/210x295/f5f5f5/666666/?text=TV">`}`;
+    const imgTvShow = oneTvShowObj.show.image ? '<img src="' + oneTvShowObj.show.image.medium + '">' : '<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">';
 
     const html = `
     <li class="js_card ${favClass}" id="${oneTvShowObj.show.id}"><h3>${oneTvShowObj.show.name}</h3>${imgTvShow}
     </li> 
-    ` //cambiar datos en URL
+    `
     return html
-    //allTvShows.innerHTML = html FUNCIONA
 }
-renderOneTvShow(oneTvShowObj)
-console.log(renderOneTvShow(oneTvShowObj))
 
-
-/*
 function renderAllTvShows(tvShowsData){
     let html = "";
     for(const tvShow of tvShowsData){
         html += renderOneTvShow(tvShow)
     }
     allTvShows.innerHTML = html;
+    /*
+    for (const li of allTvShowsLi){
+        li.addEventListener('click', handleClickFav)
+    }
+        */
 } 
-renderAllTvShows(oneTvShowObj)
+/*
+function renderAllFavs(){
+    let html = "";
+    for (const tvShow of favTvShowsData){
+        html += renderOneTvShow(tvShow)
+    }
+    favTvShows.innerHTML = html;
+}
+*/
+function retrieveData(){
+    const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
+    if(tvShowsFromLS){
+        tvShowsData = tvShowsFromLS
+        renderAllTvShows(tvShowsData)
+    }else{
+        fetch(`https://api.tvmaze.com/search/shows?q=girls`)
+        .then(res => res.json())
+        .then(data => {
+            tvShowsData = data
+            localStorage.setItem("cache", JSON.stringify(tvShowsData));
+            renderAllTvShows(tvShowsData)
+        })
+    }
+}
+retrieveData()
+
+/*
+function retrieveFavs(){
+
+}
 */

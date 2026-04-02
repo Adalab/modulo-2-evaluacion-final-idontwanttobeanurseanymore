@@ -66,7 +66,9 @@ function renderAllData(){
 //LS
 function retrieveData(){
     const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
-    if(tvShowsData = tvShowsFromLS){
+    if(tvShowsFromLS){
+        tvShowsData = tvShowsFromLS
+        renderAllTvShows(tvShowsData)
         //Si hay datos, pintalos
     }else{
         renderAllData(tvShowsData)
