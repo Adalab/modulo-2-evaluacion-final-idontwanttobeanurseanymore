@@ -164,3 +164,6 @@ function retrieveFavs(){
         renderAllFav()
     }
 }
+
+retrieveData();
+retrieveFavs();
