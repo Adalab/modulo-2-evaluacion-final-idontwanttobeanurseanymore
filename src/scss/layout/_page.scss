@@ -43,9 +43,6 @@ body {
 .search_btn{
     margin: 2rem;
 }
-.fav_ul{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
+.favourite{
+    background-color: vars.$color-secondary
 }
