@@ -7,7 +7,7 @@ const searchBtn =  document.querySelector('.js_search_btn');
 //const favBtn = document.querySelector('.js_fav_btn');
 
 const allTvShows = document.querySelector('.js_results_ul');
-//const favTvShows = document.querySelector('.js_fav_ul')
+const favTvShows = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_card_li')
 
 let tvShowsData = []
@@ -85,14 +85,15 @@ function handleClickBtn(ev){
     }) //fetch busca según el input y almacena el resultado 
         //el resultado es el argumento que le pasamos al render
 }
-function handleClickFav(){
-    const clickedId = ev.currentTarget.show.id
+function handleClickFav(ev){
+    const clickedId = ev.currentTarget.id
+    console.log(clickedId)
     const clickedShow = tvShowsData.find(
-        (eachObj) => eachObj.id === clickedId
+        (eachObj) => eachObj.show.id === parseInt(clickedId)
     )
     if (clickedId !== undefined){
         const favIndex = favTvShowsData.findIndex(
-            (eachObj) => eachObj.id === clickedShow.id)
+            (eachObj) => eachObj.show.id === clickedShow.show.id)
         if (favIndex !== -1){
             favTvShowsData.splice(favIndex, 1)
         }else {
@@ -108,14 +109,14 @@ searchBtn.addEventListener('click', handleClickBtn)
 
 function renderOneTvShow(oneTvShow){
     const favIndex = favTvShowsData.findIndex(
-        (eachObj) => eachObj.id === oneTvShow.show.id)
+        (eachObj) => eachObj.show.id === oneTvShow.show.id)
     const favClass = favIndex !== -1 ? "favourite" : ""
     //obj con ese id en el array de fav
 
     const imgTvShow = oneTvShow.show.image ? '<img src="' + oneTvShow.show.image.medium + '">' : '<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">';
 
     const html = `
-    <li class="card_li ${favClass}" id="${oneTvShow.show.id}"><h3>${oneTvShow.show.name}</h3>${imgTvShow}
+    <li class="card_li js_card_li ${favClass}" id="${oneTvShow.show.id}"><h3>${oneTvShow.show.name}</h3>${imgTvShow}
     </li> 
     `
     return html
@@ -127,11 +128,18 @@ function renderAllTvShows(tvShowsData){
         html += renderOneTvShow(tvShow)
     }
     allTvShows.innerHTML = html;
-    const cards = document.querySelectorAll('.js_card')
+    const cards = document.querySelectorAll('.js_card_li') //oneTvShow
     for(const card of cards){
         card.addEventListener('click', handleClickFav)
     }
 } 
+function renderAllFav(){
+    let html = "";
+    for (const tvShow of favTvShowsData){
+        html += renderOneTvShow(tvShow);
+    }
+    favTvShows.innerHTML = html;
+}
 
 function retrieveData(){
     const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
@@ -146,5 +154,13 @@ function retrieveData(){
             localStorage.setItem("cache", JSON.stringify(tvShowsData));
             renderAllTvShows(tvShowsData)
         })
+    }
+}
+
+function retrieveFavs(){
+    const favTvShowsFromLS = JSON.parse(localStorage.getItem("favs"));
+    if (favTvShowsFromLS){
+        favTvShowsData = favTvShowsFromLS
+        renderAllFav()
     }
 }
