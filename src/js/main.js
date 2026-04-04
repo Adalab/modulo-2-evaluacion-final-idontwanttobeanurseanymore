@@ -1,19 +1,19 @@
 'use strict';
 //User -> Input -> click -> renderShows() -> API -> renderAllShows()
 
-//1. HTML -> JS (querySelector('.'))
-const mainPage = document.querySelector('.js_main_page');
+//const mainPage = document.querySelector('.js_main_page');
 const searchInput =  document.querySelector('.js_search_input');
 const searchBtn =  document.querySelector('.js_search_btn');
-const favBtn = document.querySelector('.js_fav_btn')
+//const favBtn = document.querySelector('.js_fav_btn');
+
 const allTvShows = document.querySelector('.js_results_ul');
-const favTvShows = document.querySelector('.js_fav_ul')
+//const favTvShows = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_card_li')
 
 let tvShowsData = []
 let favTvShowsData = []
 /*
-const oneTvShowObj = {
+const one Tv ShowObj = {
     "score": 0.7404193,
     "show": {
       "id": 72204,
@@ -74,7 +74,7 @@ const oneTvShowObj = {
 //2. Llamar al API -> function + fetch + renderShows()
 //LLAMA AL HACER CLICK
 */
-//2. Llamar al API -> function + fetch + renderAllTvShows()
+//Llamar al API -> function + fetch + renderAllTvShows()
 function handleClickBtn(ev){
     ev.preventDefault();
     fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
@@ -83,40 +83,39 @@ function handleClickBtn(ev){
         tvShowsData = data
         renderAllTvShows(tvShowsData)
     }) //fetch busca según el input y almacena el resultado 
-        //el resultado es el argumento que le pasamos a la funcion que pinta
+        //el resultado es el argumento que le pasamos al render
+}
+function handleClickFav(){
+    const clickedId = ev.currentTarget.show.id
+    const clickedShow = tvShowsData.find(
+        (eachObj) => eachObj.id === clickedId
+    )
+    if (clickedId !== undefined){
+        const favIndex = favTvShowsData.findIndex(
+            (eachObj) => eachObj.id === clickedShow.id)
+        if (favIndex !== -1){
+            favTvShowsData.splice(favIndex, 1)
+        }else {
+            favTvShowsData.push(clickedShow)
+        }
+        localStorage.setItem("favs", JSON.stringify(favTvShowsData));
+        renderAllTvShows(tvShowsData)
+        renderAllFav()
+    }
 }
 searchBtn.addEventListener('click', handleClickBtn)
 //al hacer click, llama a la función que hace fetch
 
-function handleClickFavBtn(ev){
-    //console.log(ev.currentTarget)
-    const clickedTvShowId = ev.currentTarget.show.id;
-    //id del show clicked
-    const clickedTvShow = tvShowsData.find(
-        (eachShow) => eachShow.show.id === clickedTvShowId);
-        //verifica el id
-    if(clickedTvShowId !== undefined){ //si existe
-        const favIndex = favTvShowsData.findIndex((eachShow) => eachShow.show.id === clickedTvShow.id) //buscalo
-    
-    if(favIndex !== -1){  //si ya está, "córtalo" y metelo en el array
-        favTvShowsData.splice(favIndex, 1)
-    }else{ //si no está, push al array
-        favTvShowsData.push(clickedTvShow)
-    }
-    localStorage.setItem("favs", JSON.stringify(favTvShowsData))
-    renderAllTvShows(tvShowsData)
-    renderAllFavs(favTvShowsData)
-}}
-
-favBtn.addEventListener('click', handleClickFavBtn)
-
-function renderOneTvShow(oneTvShowObj){
-    const favIndex = favTvShowsData.findIndex((eachFavShow) => eachFavShow.show.id === oneTvShowObj.show.id)
+function renderOneTvShow(oneTvShow){
+    const favIndex = favTvShowsData.findIndex(
+        (eachObj) => eachObj.id === oneTvShow.show.id)
     const favClass = favIndex !== -1 ? "favourite" : ""
-    const imgTvShow = oneTvShowObj.show.image ? '<img src="' + oneTvShowObj.show.image.medium + '">' : '<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">';
+    //obj con ese id en el array de fav
+
+    const imgTvShow = oneTvShow.show.image ? '<img src="' + oneTvShow.show.image.medium + '">' : '<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">';
 
     const html = `
-    <li class="card_li ${favClass}" id="${oneTvShowObj.show.id}"><h3>${oneTvShowObj.show.name}</h3><button class="fav_btn js_fav_btn" type="submit"> <3 </button>${imgTvShow}
+    <li class="card_li ${favClass}" id="${oneTvShow.show.id}"><h3>${oneTvShow.show.name}</h3>${imgTvShow}
     </li> 
     `
     return html
@@ -128,27 +127,18 @@ function renderAllTvShows(tvShowsData){
         html += renderOneTvShow(tvShow)
     }
     allTvShows.innerHTML = html;
-    /*
-    for (const li of allTvShowsLi){
-        li.addEventListener('click', handleClickFavBtn)
+    const cards = document.querySelectorAll('.js_card')
+    for(const card of cards){
+        card.addEventListener('click', handleClickFav)
     }
-        */
 } 
-
-function renderAllFavs(){
-    let html = "";
-    for (const tvShow of favTvShowsData){
-        html += renderOneTvShow(tvShow)
-    }
-    favTvShows.innerHTML = html;
-}
 
 function retrieveData(){
     const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
-    if(tvShowsFromLS){
+    if (tvShowsFromLS){
         tvShowsData = tvShowsFromLS
         renderAllTvShows(tvShowsData)
-    }else{
+    }else {
         fetch(`https://api.tvmaze.com/search/shows?q=girls`)
         .then(res => res.json())
         .then(data => {
@@ -158,15 +148,3 @@ function retrieveData(){
         })
     }
 }
-retrieveData()
-
-
-function retrieveFavs(){
-    const favTvShowsFromLS = JSON.parse(localStorage.getItem("favs"));
-        if(favTvShows){
-        favTvShowsData = favTvShowsFromLS 
-        renderAllFavs(favTvShowsData)
-        }
-}
-retrieveFavs()
-console.log(favTvShowsData)
