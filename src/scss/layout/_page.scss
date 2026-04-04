@@ -1,4 +1,5 @@
 @use '../core/variables' as vars;
+@use '../core/reset' as reset;
 
 body {
     padding: 2rem;
@@ -25,10 +26,7 @@ body {
     padding: 1rem;
     width: 250px;
 }
-.card_li > h3{
-    max-width: 200px;
-}
-.card_li > img{
+.card_li > h3, img{
     max-width: 200px;
 }
 .search_form{
@@ -45,4 +43,24 @@ body {
 }
 .favourite{
     background-color: vars.$color-secondary
+}
+.fav_ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: vars.$color-secondary
+}
+.fav_ul > li{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.fav_ul > .favourite > img{
+    max-width: 100px;
 }

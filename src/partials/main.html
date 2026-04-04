@@ -1,46 +1,27 @@
-<main class="main_page js_main_page">
+<main>
   <form class="search_form js_search">
     <input class="search_input js_search_input" type="text" name="inputName" id="inputName"placeholder="">
     <button class="search_btn js_search_btn" type="submit">buscar</button>
-    <!--
-      Vacío (o fav) hasta el click 
-      Click en buscar: conecta al API
-      texto escrito en input: URL de búsqueda
-    -->
   </form>
   <div class="fav_div js_fav_div">
     <ul class="fav_ul js_fav_ul">
-
+      <!--
+      Favoritos
+      Cambia fondo/fuente para resaltar que es fav
+      a la izq, debajo de formulario de búsqueda, listado de fav
+      usar un array para almacenarlas
+      al iniciar otra búsqueda, no deben desaparecer
+      localStorage almacena favoritos (y los muestra desde el inicio)
+      BONUS: 
+        - X para borrar fav
+        - resaltar en búsqueda si ya es fav
+        - borrar todos los fav con un botón
+      -->
     </ul>
-   
-    <!--
-    Favoritos
-    Cambia fondo/fuente para resaltar que es fav
-    a la izq, debajo de formulario de búsqueda, listado de fav
-    usar un array para almacenarlas
-    al iniciar otra búsqueda, no deben desaparecer
-    localStorage almacena favoritos (y los muestra desde el inicio)
-    BONUS: 
-      - X para borrar fav
-      - resaltar en búsqueda si ya es fav
-      - borrar todos los fav con un botón
-    -->
   </div>
   <div class="results_div js_results_div">
     <ul class="results_ul js_results_ul">
-      <!--
-      <li class="card_li js_card_li">
-        <h3>United States</h3><button class="fav_btn js_fav_btn" type="submit">fav</button>
-        <img src="https://static.tvmaze.com/uploads/images/medium_portrait/90/225449.jpg">
-      </li>
-      -->
-      
     </ul>
-    <!--
-    listado de resultados
-      cada resultado: tarjeta con título e imagen
-      si no hay imagen: imagen de relleno (placeholder.co)
-    -->
   </div>
 </main>
 
