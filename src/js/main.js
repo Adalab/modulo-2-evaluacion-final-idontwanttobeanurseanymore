@@ -162,10 +162,11 @@ retrieveData()
 
 
 function retrieveFavs(){
-    const favTvShowsFromLs = JSON.parse(localStorage.getItem("favs"));
-        if(tvShosFromLS){
+    const favTvShowsFromLS = JSON.parse(localStorage.getItem("favs"));
+        if(favTvShows){
         favTvShowsData = favTvShowsFromLS 
         renderAllFavs(favTvShowsData)
         }
 }
 retrieveFavs()
+console.log(favTvShowsData)
