@@ -5,4 +5,42 @@ body {
     height: 100vh;
     background-color: vars.$color-bg;
     font-family: vars.$font-main;
+    font-size: 16px;
+}
+.results_ul{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    list-style: none;
+    padding: 2rem;
+}
+.card_li{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border: 1px, dashed, black;
+    padding: 1rem;
+    width: 250px;
+}
+.card_li > h3{
+    max-width: 200px;
+}
+.card_li > img{
+    max-width: 200px;
+}
+.search_form{
+    display: flex;
+    
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px, solid, black
+}
+.search_input{
+    margin: 2rem;
+}
+.search_btn{
+    margin: 2rem;
 }

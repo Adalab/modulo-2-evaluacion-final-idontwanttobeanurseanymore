@@ -104,7 +104,7 @@ function handleClickFav(ev){
     }
     localStorage.setItem("favs", JSON.stringify(favTvShowsData))
     renderAllTvShows(tvShowsData)
-    //renderAllFavourites() - función para pintar los favs
+    //renderAllFavs() - función para pintar los favs
 }}
 */
 function renderOneTvShow(oneTvShowObj){
@@ -113,7 +113,7 @@ function renderOneTvShow(oneTvShowObj){
     const imgTvShow = oneTvShowObj.show.image ? '<img src="' + oneTvShowObj.show.image.medium + '">' : '<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">';
 
     const html = `
-    <li class="js_card ${favClass}" id="${oneTvShowObj.show.id}"><h3>${oneTvShowObj.show.name}</h3>${imgTvShow}
+    <li class="card_li ${favClass}" id="${oneTvShowObj.show.id}"><h3>${oneTvShowObj.show.name}</h3><button type="submit"> <3 </button>${imgTvShow}
     </li> 
     `
     return html
@@ -159,6 +159,11 @@ retrieveData()
 
 /*
 function retrieveFavs(){
-
+    const favTvShowsFromLs = JSON.parse(localStorage.getItem("favs"));
+        if(tvShosFromLS){
+        favTvShowsData = favTvShowsFromLS 
+        renderAllFavs(favTvShowsData)
+        }
 }
+retrieveFavs()
 */
