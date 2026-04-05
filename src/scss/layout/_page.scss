@@ -8,6 +8,19 @@ body {
     font-family: vars.$font-main;
     font-size: 16px;
 }
+.left_side{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.search_form{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 1px, solid, black;
+    padding: 1rem;
+}
 .results_ul{
     display: flex;
     flex-wrap: wrap;
@@ -15,7 +28,7 @@ body {
     list-style: none;
     padding: 2rem;
 }
-.card_li{
+.list{
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -26,21 +39,22 @@ body {
     padding: 1rem;
     width: 250px;
 }
-.card_li > h3, img{
+.list > h3, img{
     max-width: 200px;
 }
-.search_form{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    border: 1px, solid, black
-}
+
+/*
 .search_input{
     margin: 2rem;
+    padding: 0.5rem;
 }
 .search_btn{
     margin: 2rem;
 }
+.hidden{
+    display: none;
+}*/
+
 .favourite{
     background-color: vars.$color-secondary
 }
@@ -50,8 +64,8 @@ body {
     flex-wrap: wrap;
     text-align: center;
     align-items: center;
-    padding: 2rem;
-    background-color: vars.$color-secondary
+    padding: 1rem;
+    background-color: vars.$color-secondary;
 }
 .fav_ul > li{
     display: flex;
@@ -64,6 +78,11 @@ body {
 .fav_ul > .favourite > img{
     max-width: 100px;
 }
-.results_h3{
+.rate{
+    font-size: 0.8rem;
+    color: rgb(74, 34, 34);
+}
+.message{
     display: block;
+    padding: 2rem 0;
 }
