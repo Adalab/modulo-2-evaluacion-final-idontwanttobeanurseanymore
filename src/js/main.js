@@ -6,6 +6,7 @@ const searchBtn =  document.querySelector('.js_search_btn');
 const allTvShows = document.querySelector('.js_results_ul');
 const favTvShows = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_card_li')
+const results = document.querySelector('.js_results_h3')
 
 let tvShowsData = []
 let favTvShowsData = []
@@ -21,11 +22,11 @@ function renderOneTvShow(oneTvShow){
     const favIndex = favTvShowsData.findIndex(
         (eachObj) => eachObj.show.id === oneTvShow.show.id)
     const favClass = favIndex !== -1 ? "favourite" : ""
-
+    
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295/f5f5f5/666666/?text=No\nImage\nAvailable">`;
-
+    const rate = oneTvShow.show.rating.average ? `Average rate: ${oneTvShow.show.rating.average}` : `No rate available`
     const html = `
-    <li class="card_li js_card_li ${favClass}" id="${oneTvShow.show.id}"><h3>${oneTvShow.show.name}</h3>${imgTvShow}
+    <li class="card_li js_card_li ${favClass}" id="${oneTvShow.show.id}"><h3>${oneTvShow.show.name}</h3>${imgTvShow}<h3>${rate}</h3>
     </li> 
     `
     return html
@@ -35,6 +36,7 @@ function renderAllTvShows(tvShowsData){
     for(const tvShow of tvShowsData){
         html += renderOneTvShow(tvShow)
     }
+    results.innerHTML = `Your search: ' ${searchInput.value} '`
     allTvShows.innerHTML = html;
 }
 function renderAllFav(){
@@ -82,7 +84,7 @@ function retrieveData(){
         tvShowsData = tvShowsFromLS
         renderAllTvShows(tvShowsData)
     }else {
-        fetch(`api.tvmaze.com/search/shows?q=girls`)
+        fetch(`api.tvmaze.com/search/shows?q=${searchInput.value}`)
         .then(res => res.json())
         .then(data => {
             tvShowsData = data
