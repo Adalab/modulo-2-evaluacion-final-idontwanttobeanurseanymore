@@ -2,7 +2,6 @@
 
 const searchInput =  document.querySelector('.js_search_input');
 const searchBtn =  document.querySelector('.js_search_btn');
-
 const allTvShowsUl = document.querySelector('.js_results_ul');
 const favTvShowsUl = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_list')
@@ -20,14 +19,15 @@ function retrieveFavs(){
 }
 function renderOneTvShow(oneTvShow){
     const favIndex = favTvShowsData.findIndex(
-        (eachObj) => eachObj.show.id === oneTvShow.show.id)
-    const favClass = favIndex !== -1 ? "favourite" : ""
-    const name = oneTvShow.show.name 
-    const id = oneTvShow.show.id
+        (eachObj) => eachObj.show.id === oneTvShow.show.id);
+    const favClass = favIndex !== -1 ? "favourite" : "";
+    const isFav = favIndex !== -1 ? '<button class="remove_btn js_remove_btn">❌</button>' : ''
+    const name = oneTvShow.show.name;
+    const id = oneTvShow.show.id;
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
-    const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`
+    const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`;
     const html = `
-    <li class="list js_list ${favClass}" id="${id}"><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+    <li class="list js_list ${favClass}" id="${id}">${isFav}<h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
@@ -63,15 +63,28 @@ function handleClickBtn(ev){
 function handleClickFav(ev){
     const clickedLi = ev.target.closest('.js_list');
     if (!clickedLi) return;
+
     const clickedId = parseInt(clickedLi.id);
+    const isRemoveBtn = ev.target.classList.contains('js_remove_btn');
+
+    const favIndex = favTvShowsData.findIndex(
+        (eachObj) => eachObj.show.id === clickedId
+    );
+    
+    if (isRemoveBtn) {
+        if (favIndex !== -1) {
+            favTvShowsData.splice(favIndex, 1);
+        }
+        localStorage.setItem("favs", JSON.stringify(favTvShowsData));
+        renderAllFav();
+        renderAllTvShows(tvShowsData);
+        return;
+    }
 
     const clickedShow = tvShowsData.find(
         (eachObj) => eachObj.show.id === clickedId
-    );
-    const favIndex = favTvShowsData.findIndex(
-        (eachObj) => eachObj.show.id === clickedShow.show.id
-    );
-    
+    ) 
+
     if (clickedShow){
         if (favIndex !== -1){
             favTvShowsData.splice(favIndex, 1)
@@ -79,12 +92,14 @@ function handleClickFav(ev){
             favTvShowsData.push(clickedShow)
         }
     }
+
     localStorage.setItem("favs", JSON.stringify(favTvShowsData));
     clickedLi.classList.toggle('favourite');
     renderAllFav()
 }
-searchBtn.addEventListener('click', handleClickBtn)
-allTvShowsUl.addEventListener('click', handleClickFav)
+searchBtn.addEventListener('click', handleClickBtn);
+allTvShowsUl.addEventListener('click', handleClickFav);
+favTvShowsUl.addEventListener('click', handleClickFav);
 
 function retrieveData(){
     const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
@@ -92,7 +107,7 @@ function retrieveData(){
         tvShowsData = tvShowsFromLS
         renderAllTvShows(tvShowsData)
     }else {
-        fetch(`api.tvmaze.com/search/shows?q=${searchInput.value}`)
+        fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
         .then(res => res.json())
         .then(data => {
             tvShowsData = data

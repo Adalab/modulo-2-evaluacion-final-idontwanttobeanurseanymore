@@ -12,12 +12,12 @@ main{
     display: flex;
     flex-direction: row;
     align-content: space-between;
-    
 }
 .left_side{
     display: block;
-    width: 450px;
-    border: 1px solid black;
+    width: 402px;
+    border: 2px solid #000;
+    
 }
 .search_form{
     display: flex;
@@ -26,7 +26,7 @@ main{
     gap: 0.5rem;
     width: 400px;
     justify-content: center;
-    border: 1px solid black;
+    border-bottom: 1px solid black;
     padding: 1rem;
 }
 .search_input{
@@ -54,7 +54,7 @@ main{
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    border: 1px, dashed, black;
+    border: 1px dashed black;
     padding: 1rem;
     width: 250px;
 }
@@ -71,6 +71,7 @@ main{
     text-align: center;
     align-items: center;
     padding: 1rem;
+    
 }
 .fav_ul > li{
     display: flex;
@@ -80,6 +81,17 @@ main{
     flex-wrap: wrap;
     gap: 1rem;
     width: 175px;
+    max-height: 300px;
+    padding: 0;
+    font-size: 0.8rem;
+    //position: relative;
+}
+.remove_btn{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    margin-top: 0.5rem;
+    cursor: pointer;
 }
 .fav_ul > .favourite > img{
     width: 100px;
@@ -90,9 +102,10 @@ main{
 }
 .message{
     padding: 2rem;
+    max-width:  400px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   body {
     padding: 1rem;
   }
@@ -113,14 +126,17 @@ main{
   .results_ul {
     flex-direction: column;
     padding: 1rem;
+    width: 400px;
   }
-  .list {
-    flex-direction: row;
+  .results_ul > li{
     width: 100%;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 85px auto 80px;
+    padding: 0.5rem;
   }
+ 
   .list img {
-    width: 80px;
+    width: 100px;
     flex-shrink: 0;
   }
   .list h3 {
@@ -128,14 +144,15 @@ main{
   }
   .fav_ul {
     flex-direction: column;
-    align-items: flex-start;
   }
   .fav_ul > li {
-    flex-direction: row;
     width: 100%;
+    display: grid;
+    grid-template-columns: 25px 85px auto 80px;
+    padding: 0.5rem;
   }
   .fav_ul img {
-    width: 60px;
+    width: 50px;
     align-content: space-between;
   }
   .message {
