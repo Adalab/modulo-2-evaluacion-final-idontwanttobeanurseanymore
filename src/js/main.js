@@ -6,7 +6,7 @@ const allTvShowsUl = document.querySelector('.js_results_ul');
 const favTvShowsUl = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_list')
 const message = document.querySelector('.js_result_message')
-
+const favMessage = document.querySelector('.js_fav_message')
 let tvShowsData = []
 let favTvShowsData = []
 
@@ -35,10 +35,12 @@ function renderAllTvShows(tvShowsData){
     for(const tvShow of tvShowsData){
         html += renderOneTvShow(tvShow)
     }
-    if(!html){
-        message.innerHTML = `We couldn't find ' ${searchInput.value} '`
+    if(!searchInput.value){
+        message.textContent = ""
+    }else if(!html){
+        message.textContent = `We couldn't find ' ${searchInput.value} '`
     }else{
-        message.innerHTML = `Your search: ' ${searchInput.value} '`
+        message.textContent = `Your search: ' ${searchInput.value} '`
     }
     allTvShowsUl.innerHTML = html;
 }
@@ -48,6 +50,13 @@ function renderAllFav(){
         html += renderOneTvShow(tvShow);
     }
     favTvShowsUl.innerHTML = html;
+
+    if (favTvShowsData.length > 0){
+        favMessage.textContent = "Your ♥ shows:";
+        favMessage.style.display = "block";
+    }else{
+        favMessage.textContent = "There's no ♥ yet";
+    }
 }
 function handleClickBtn(ev){
     ev.preventDefault();
@@ -97,7 +106,7 @@ function retrieveData(){
     if (data && data !== "undefined"){
         tvShowsData = JSON.parse(data)
         renderAllTvShows(tvShowsData)
-    }else {
+    }else if (searchInput.value) {
         fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
         .then(res => res.json())
         .then(data => {

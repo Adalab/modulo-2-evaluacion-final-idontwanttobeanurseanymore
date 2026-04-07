@@ -79,9 +79,8 @@ main{
     gap: 1rem;
     width: 175px;
     max-height: 300px;
-    padding: 0;
+    padding: 0.8rem;
     font-size: 0.8rem;
-    
 }
 .remove_btn{
     width: 25px;
@@ -90,12 +89,15 @@ main{
     margin-top: 0.5rem;
     cursor: pointer;
 }
+.remove_btn:hover{
+    background-color: vars.$color-other;
+}
 .fav_ul > li > img{
     width: 100px;
 }
 .rate{
     font-size: 0.8rem;
-    color: rgb(74, 34, 34);
+    color: vars.$color-other
 }
 .message{
     padding: 2rem;
