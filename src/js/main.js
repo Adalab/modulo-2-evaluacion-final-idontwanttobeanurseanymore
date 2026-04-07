@@ -18,15 +18,14 @@ function retrieveFavs(){
     }
 }
 function renderOneTvShow(oneTvShow){
-    const favIndex = favTvShowsData.findIndex(
-        (eachObj) => eachObj.show.id === oneTvShow.show.id);
-    const favClass = favIndex !== -1 ? "favourite" : "";
     const name = oneTvShow.show.name;
     const id = oneTvShow.show.id;
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
     const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`;
     const html = `
-    <li class="list js_list ${favClass}" id="${id}"><button class="remove_btn js_remove_btn">X</button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+    <li class="list js_list" id="${id}" style="background-color: ${
+            favTvShowsData.some(show => show.show.id === id) ? 'pink' : ''
+        }"><button class="remove_btn js_remove_btn">X</button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
@@ -56,42 +55,42 @@ function handleClickBtn(ev){
     .then(res => res.json())
     .then(data => {
         tvShowsData = data
+        localStorage.setItem("cache", JSON.stringify(tvShowsData));
         renderAllTvShows(tvShowsData)
     })
 }
+
 function handleClickFav(ev){
     const clickedLi = ev.target.closest('.js_list');
     if (!clickedLi) return;
     
     const clickedId = parseInt(clickedLi.id);
+
     if (ev.target.classList.contains('js_remove_btn')){
         const favIndex = favTvShowsData.findIndex(
-        (eachObj) => eachObj.show.id === clickedId
-    );
+            (eachObj) => eachObj.show.id === clickedId
+        );
+
         if (favIndex !== -1){
             favTvShowsData.splice(favIndex, 1)
             localStorage.setItem("favs", JSON.stringify(favTvShowsData));
-            renderAllFav()
         }
-    }else{
-        const favIndex = favTvShowsData.findIndex(show => show.show.id === clickedId);
-        const clickedShow = tvShowsData.find(show => show.show.id === clickedId);
-        if (!clickedShow) return;
-        if (favIndex !== -1) {
-            favTvShowsData.splice(favIndex, 1);
-           
-        } else {
-        favTvShowsData.push(clickedShow);   
+        renderAllTvShows(tvShowsData);
+        renderAllFav();
+        return;
     }
-
-    localStorage.setItem("favs", JSON.stringify(favTvShowsData));
-    renderAllFav()
+    const clickedShow = tvShowsData.find(show => show.show.id === clickedId);
+    if (!clickedShow) return;
     
+    const favIndex = favTvShowsData.findIndex(show => show.show.id === clickedId);
+
+    if (favIndex === -1) {
+        favTvShowsData.push(clickedShow); 
+        localStorage.setItem("favs", JSON.stringify(favTvShowsData));
+        renderAllTvShows(tvShowsData);
+        renderAllFav();
     }
 }
-searchBtn.addEventListener('click', handleClickBtn);
-allTvShowsUl.addEventListener('click', handleClickFav);
-favTvShowsUl.addEventListener('click', handleClickFav)
 
 function retrieveData(){
     const data = localStorage.getItem("cache");
@@ -108,6 +107,10 @@ function retrieveData(){
         })
     }
 }
+
+searchBtn.addEventListener('click', handleClickBtn);
+allTvShowsUl.addEventListener('click', handleClickFav);
+favTvShowsUl.addEventListener('click', handleClickFav)
 
 retrieveFavs()
 retrieveData()
