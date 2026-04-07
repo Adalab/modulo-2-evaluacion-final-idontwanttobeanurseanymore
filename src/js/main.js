@@ -2,11 +2,15 @@
 
 const searchInput =  document.querySelector('.js_search_input');
 const searchBtn =  document.querySelector('.js_search_btn');
+const removeAllBtn = document.querySelector('.js_remove_all_btn');
+
 const allTvShowsUl = document.querySelector('.js_results_ul');
 const favTvShowsUl = document.querySelector('.js_fav_ul')
 const oneTvShow = document.querySelector('.js_list')
+
 const message = document.querySelector('.js_result_message')
 const favMessage = document.querySelector('.js_fav_message')
+
 let tvShowsData = []
 let favTvShowsData = []
 
@@ -54,8 +58,10 @@ function renderAllFav(){
     if (favTvShowsData.length > 0){
         favMessage.textContent = "Your ♥ shows:";
         favMessage.style.display = "block";
+        removeAllBtn.style.display = "block";
     }else{
         favMessage.textContent = "There's no ♥ yet";
+        removeAllBtn.style.display = "none";
     }
 }
 function handleClickBtn(ev){
@@ -68,7 +74,6 @@ function handleClickBtn(ev){
         renderAllTvShows(tvShowsData)
     })
 }
-
 function handleClickFav(ev){
     const clickedLi = ev.target.closest('.js_list');
     if (!clickedLi) return;
@@ -100,7 +105,13 @@ function handleClickFav(ev){
         renderAllFav();
     }
 }
-
+function removeAll(){
+        favTvShowsData = []
+        localStorage.setItem("favs", JSON.stringify(favTvShowsData));
+        
+        renderAllTvShows(tvShowsData);
+        renderAllFav();
+}
 function retrieveData(){
     const data = localStorage.getItem("cache");
     if (data && data !== "undefined"){
@@ -118,6 +129,7 @@ function retrieveData(){
 }
 
 searchBtn.addEventListener('click', handleClickBtn);
+removeAllBtn.addEventListener('click', removeAll)
 allTvShowsUl.addEventListener('click', handleClickFav);
 favTvShowsUl.addEventListener('click', handleClickFav)
 
