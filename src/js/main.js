@@ -6,7 +6,7 @@ const removeAllBtn = document.querySelector('.js_remove_all_btn');
 
 const allTvShowsUl = document.querySelector('.js_results_ul');
 const favTvShowsUl = document.querySelector('.js_fav_ul')
-const oneTvShow = document.querySelector('.js_list')
+
 
 const message = document.querySelector('.js_result_message')
 const favMessage = document.querySelector('.js_fav_message')
@@ -21,6 +21,7 @@ function retrieveFavs(){
         renderAllFav()
     }
 }
+//RENDER
 function renderOneTvShow(oneTvShow){
     const name = oneTvShow.show.name;
     const id = oneTvShow.show.id;
@@ -64,6 +65,7 @@ function renderAllFav(){
         removeAllBtn.style.display = "none";
     }
 }
+//HANDLE
 function handleClickBtn(ev){
     ev.preventDefault();
     fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
@@ -105,6 +107,7 @@ function handleClickFav(ev){
         renderAllFav();
     }
 }
+//REMOVE ALL
 function removeAll(){
         favTvShowsData = []
         localStorage.setItem("favs", JSON.stringify(favTvShowsData));
@@ -112,11 +115,11 @@ function removeAll(){
         renderAllTvShows(tvShowsData);
         renderAllFav();
 }
+//RETRIEVE
 function retrieveData(){
     const data = localStorage.getItem("cache");
     if (data && data !== "undefined"){
         tvShowsData = JSON.parse(data)
-        //renderAllTvShows(tvShowsData)
     }else if (searchInput.value) {
         fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
         .then(res => res.json())
@@ -127,11 +130,11 @@ function retrieveData(){
         })
     }
 }
-
+//EVENT LISTENER
 searchBtn.addEventListener('click', handleClickBtn);
 removeAllBtn.addEventListener('click', removeAll)
 allTvShowsUl.addEventListener('click', handleClickFav);
 favTvShowsUl.addEventListener('click', handleClickFav)
-
+//CALLS
 retrieveFavs()
 retrieveData()
