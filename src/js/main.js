@@ -25,9 +25,9 @@ function renderOneTvShow(oneTvShow){
     const name = oneTvShow.show.name 
     const id = oneTvShow.show.id
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
-    const rate = oneTvShow.show.rating.average ? `Average rate: ${oneTvShow.show.rating.average}` : `No rate available`
+    const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`
     const html = `
-    <li class="list js_list ${favClass}" id="${id}"><h3 class="name">${name.slice(0, 22)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+    <li class="list js_list ${favClass}" id="${id}"><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
@@ -104,10 +104,3 @@ function retrieveData(){
 
 retrieveFavs()
 retrieveData();
-
-/* cómo hago esto????
-if(favTvShowsData.length === 0){
-    const favDiv = document.querySelector('.js_fav_div');
-    favDiv.classList.add('hidden')
-}
-*/

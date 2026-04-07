@@ -3,23 +3,42 @@
 
 body {
     padding: 2rem;
-    height: 100vh;
+    min-height: 100vh;
     background-color: vars.$color-bg;
     font-family: vars.$font-main;
     font-size: 16px;
 }
-.left_side{
+main{
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: space-between;
+    
+}
+.left_side{
+    display: block;
+    width: 450px;
+    border: 1px solid black;
 }
 .search_form{
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 400px;
     justify-content: center;
-    border: 1px, solid, black;
+    border: 1px solid black;
     padding: 1rem;
+}
+.search_input{
+    width: 100%;
+    max-width: 300px;
+    background-color: vars.$color-search;
+    padding: 0 0.5rem;
+}
+.search_btn{
+    width: 50%;
+    background-color: white;
+    cursor: pointer;
 }
 .results_ul{
     display: flex;
@@ -39,22 +58,9 @@ body {
     padding: 1rem;
     width: 250px;
 }
-.list > h3, img{
+.list h3, .list img{
     max-width: 200px;
 }
-
-/*
-.search_input{
-    margin: 2rem;
-    padding: 0.5rem;
-}
-.search_btn{
-    margin: 2rem;
-}
-.hidden{
-    display: none;
-}*/
-
 .favourite{
     background-color: vars.$color-secondary
 }
@@ -65,7 +71,6 @@ body {
     text-align: center;
     align-items: center;
     padding: 1rem;
-    background-color: vars.$color-secondary;
 }
 .fav_ul > li{
     display: flex;
@@ -74,15 +79,67 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    width: 175px;
 }
 .fav_ul > .favourite > img{
-    max-width: 100px;
+    width: 100px;
 }
 .rate{
     font-size: 0.8rem;
     color: rgb(74, 34, 34);
 }
 .message{
-    display: block;
-    padding: 2rem 0;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  main {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .left_side {
+    max-width: 100%;
+  }
+  .search_form {
+    width: 100%;
+  }
+  .search_input,
+  .search_btn {
+    width: 100%;
+  }
+  .results_ul {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .list {
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+  }
+  .list img {
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .list h3 {
+    font-size: 1rem;
+  }
+  .fav_ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .fav_ul > li {
+    flex-direction: row;
+    width: 100%;
+  }
+  .fav_ul img {
+    width: 60px;
+    align-content: space-between;
+  }
+  .message {
+    padding: 1rem;
+    text-align: center;
+  }
 }
