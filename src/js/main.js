@@ -105,7 +105,7 @@ function retrieveData(){
     const data = localStorage.getItem("cache");
     if (data && data !== "undefined"){
         tvShowsData = JSON.parse(data)
-        renderAllTvShows(tvShowsData)
+        //renderAllTvShows(tvShowsData)
     }else if (searchInput.value) {
         fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
         .then(res => res.json())
