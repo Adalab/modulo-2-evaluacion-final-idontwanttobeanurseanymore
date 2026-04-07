@@ -21,13 +21,12 @@ function renderOneTvShow(oneTvShow){
     const favIndex = favTvShowsData.findIndex(
         (eachObj) => eachObj.show.id === oneTvShow.show.id);
     const favClass = favIndex !== -1 ? "favourite" : "";
-    const isFav = favIndex !== -1 ? '<button class="remove_btn js_remove_btn">❌</button>' : ''
     const name = oneTvShow.show.name;
     const id = oneTvShow.show.id;
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
     const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`;
     const html = `
-    <li class="list js_list ${favClass}" id="${id}">${isFav}<h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+    <li class="list js_list ${favClass}" id="${id}"><button class="remove_btn js_remove_btn">X</button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
@@ -63,48 +62,41 @@ function handleClickBtn(ev){
 function handleClickFav(ev){
     const clickedLi = ev.target.closest('.js_list');
     if (!clickedLi) return;
-
+    
     const clickedId = parseInt(clickedLi.id);
-    const isRemoveBtn = ev.target.classList.contains('js_remove_btn');
-
-    const favIndex = favTvShowsData.findIndex(
+    if (ev.target.classList.contains('js_remove_btn')){
+        const favIndex = favTvShowsData.findIndex(
         (eachObj) => eachObj.show.id === clickedId
     );
-    
-    if (isRemoveBtn) {
-        if (favIndex !== -1) {
-            favTvShowsData.splice(favIndex, 1);
-        }
-        localStorage.setItem("favs", JSON.stringify(favTvShowsData));
-        renderAllFav();
-        renderAllTvShows(tvShowsData);
-        return;
-    }
-
-    const clickedShow = tvShowsData.find(
-        (eachObj) => eachObj.show.id === clickedId
-    ) 
-
-    if (clickedShow){
         if (favIndex !== -1){
             favTvShowsData.splice(favIndex, 1)
-        }else {
-            favTvShowsData.push(clickedShow)
+            localStorage.setItem("favs", JSON.stringify(favTvShowsData));
+            renderAllFav()
         }
+    }else{
+        const favIndex = favTvShowsData.findIndex(show => show.show.id === clickedId);
+        const clickedShow = tvShowsData.find(show => show.show.id === clickedId);
+        if (!clickedShow) return;
+        if (favIndex !== -1) {
+            favTvShowsData.splice(favIndex, 1);
+           
+        } else {
+        favTvShowsData.push(clickedShow);   
     }
 
     localStorage.setItem("favs", JSON.stringify(favTvShowsData));
-    clickedLi.classList.toggle('favourite');
     renderAllFav()
+    
+    }
 }
 searchBtn.addEventListener('click', handleClickBtn);
 allTvShowsUl.addEventListener('click', handleClickFav);
-favTvShowsUl.addEventListener('click', handleClickFav);
+favTvShowsUl.addEventListener('click', handleClickFav)
 
 function retrieveData(){
-    const tvShowsFromLS = JSON.parse(localStorage.getItem("cache"));
-    if (tvShowsFromLS){
-        tvShowsData = tvShowsFromLS
+    const data = localStorage.getItem("cache");
+    if (data && data !== "undefined"){
+        tvShowsData = JSON.parse(data)
         renderAllTvShows(tvShowsData)
     }else {
         fetch(`https://api.tvmaze.com/search/shows?q=${searchInput.value}`)
@@ -118,4 +110,4 @@ function retrieveData(){
 }
 
 retrieveFavs()
-retrieveData();
+retrieveData()
