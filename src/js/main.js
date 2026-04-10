@@ -24,17 +24,34 @@ function retrieveFavs(){
 //RENDER
 function renderOneTvShow(oneTvShow){
     const name = oneTvShow.show.name;
+    const genre = oneTvShow.show.genres
     const id = oneTvShow.show.id;
     const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
     const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`;
+    let genrehtml = ''
+    for(const oneGenre of genre){
+        genrehtml += `
+        <li> ${oneGenre}
+        </li>
+        `
+    }
     const html = `
     <li class="list js_list" id="${id}" style="background-color: ${
             favTvShowsData.some(show => show.show.id === id) ? 'pink' : ''
-        }"><button class="remove_btn js_remove_btn">X</button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+        }"><button class="remove_btn js_remove_btn">X</button><ul class="genreUl js_genreUl">${genrehtml}</ul><button class="genre js_genre_btn"></button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
 }
+
+function clickGenre(){
+
+}
+const genreBtn = document.querySelector('.js_genre_btn');
+
+
+
+
 function renderAllTvShows(tvShowsData){
     let html = "";
     for(const tvShow of tvShowsData){
@@ -94,6 +111,9 @@ function handleClickFav(ev){
         renderAllTvShows(tvShowsData);
         renderAllFav();
         return;
+    }
+    if (ev.target.classList.contains('js_genre_btn')){
+        
     }
     const clickedShow = tvShowsData.find(show => show.show.id === clickedId);
     if (!clickedShow) return;
