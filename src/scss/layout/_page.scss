@@ -124,7 +124,12 @@ main{
     padding: 2rem;
     max-width: 400px;
 }
-
+.genreUl{
+   list-style: none;
+}
+.hidden{
+  display:none;
+}
 //HOVER
 
 .btn:hover{

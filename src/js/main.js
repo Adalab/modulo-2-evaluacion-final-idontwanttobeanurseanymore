@@ -26,30 +26,25 @@ function renderOneTvShow(oneTvShow){
     const name = oneTvShow.show.name;
     const genre = oneTvShow.show.genres
     const id = oneTvShow.show.id;
-    const imgTvShow = oneTvShow.show.image ? `<img src=" ${oneTvShow.show.image.medium}">` : `<img src="https://placehold.co/210x295?text=No+Image+Available">`;
+    const imgTvShow = oneTvShow.show.image ? `<img src="${oneTvShow.show.image.medium}" alt="image">` : `<img src="https://placehold.co/210x295?text=No+Image+Available" alt="No image available">`;
     const rate = oneTvShow.show.rating.average ? `★ ${oneTvShow.show.rating.average}` : `No rate available`;
     let genrehtml = ''
     for(const oneGenre of genre){
         genrehtml += `
-        <li> ${oneGenre}
+        <li class="oneGenreLi js_oneGenreLi hidden"> ${oneGenre}
         </li>
         `
     }
     const html = `
     <li class="list js_list" id="${id}" style="background-color: ${
-            favTvShowsData.some(show => show.show.id === id) ? 'pink' : ''
-        }"><button class="remove_btn js_remove_btn">X</button><ul class="genreUl js_genreUl">${genrehtml}</ul><button class="genre js_genre_btn"></button><h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
+        favTvShowsData.some(show => show.show.id === id) ? 'pink' : ''
+        }"><button class="remove_btn js_remove_btn">X</button>
+        <button class="genre js_genre_btn">...</button><ul class="genreUl js_genreUl">${genrehtml}</ul>
+        <h3 class="name">${name.slice(0, 20)}</h3>${imgTvShow}<h3 class="rate">${rate}</h3>
     </li> 
     `
     return html
 }
-
-function clickGenre(){
-
-}
-const genreBtn = document.querySelector('.js_genre_btn');
-
-
 
 
 function renderAllTvShows(tvShowsData){
@@ -112,9 +107,7 @@ function handleClickFav(ev){
         renderAllFav();
         return;
     }
-    if (ev.target.classList.contains('js_genre_btn')){
-        
-    }
+   
     const clickedShow = tvShowsData.find(show => show.show.id === clickedId);
     if (!clickedShow) return;
     
@@ -125,6 +118,13 @@ function handleClickFav(ev){
         localStorage.setItem("favs", JSON.stringify(favTvShowsData));
         renderAllTvShows(tvShowsData);
         renderAllFav();
+    }
+}
+function handleGenres(){
+    if(!ev.target.classList.contains('js_genre_btn')) return;
+    if (ev.target.classList.contains('js_genre_btn')){
+        const clickedGenre = document.querySelector('.js_oneGenreLi');
+        clickedGenre.classList.toggle('hidden');
     }
 }
 //REMOVE ALL
@@ -152,9 +152,11 @@ function retrieveData(){
 }
 //EVENT LISTENER
 searchBtn.addEventListener('click', handleClickBtn);
-removeAllBtn.addEventListener('click', removeAll)
+removeAllBtn.addEventListener('click', removeAll);
 allTvShowsUl.addEventListener('click', handleClickFav);
-favTvShowsUl.addEventListener('click', handleClickFav)
+favTvShowsUl.addEventListener('click', handleClickFav);
+const genreBTN = document.querySelector('.js_genre_btn');
+genreBTN.addEventListener('click', handleGenres);
 //CALLS
 retrieveFavs()
 retrieveData()
